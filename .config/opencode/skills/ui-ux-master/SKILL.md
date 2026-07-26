@@ -40,6 +40,7 @@ The skill combines six areas plus targeted gap-fillers. Each area has detailed r
 | empty, error state, edge case, skeleton | `references/empty-error-states.md` |
 | accessibility, a11y, screen reader, audit, contrast | `references/accessibility-testing.md` |
 | ai slop, generic, boring, bland, cliché, template, avoid default | `references/anti-slop.md`, `references/modern-aesthetics.md` |
+| theme, bento, glassmorphism, sleek, neobrutalism, material, shadcn, minimal, claymorphism, neumorphism, retro, style, aesthetic | `references/modern-aesthetics.md` (see `theme-master` skill for full catalog) |
 | component, architecture, composition, state, colocate, refactor, structure | `references/component-architecture.md` |
 
 After loading, follow the workflow below and run the self-audit rubric before declaring the work done.
