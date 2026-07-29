@@ -26,7 +26,6 @@ If someone could look at the interface and say "AI made that" without doubt, it 
 - **Oversized uniform padding.** Equal generous padding destroys hierarchy and wastes space. Use the consistent spacing scale with intentional variation for rhythm.
 - **Shadow-heavy design.** Layered shadows compete with content and slow low-end rendering. Subtle or none unless the design system specifies.
 - **Nested cards.** Almost always wrong — reach for a different affordance.
-- **The four reflex looks.** If the result matches any of these wholesale, it's a default, not a decision: cream `#F4F1EA` + serif + terracotta accent; near-black + one acid-green/vermilion accent; broadsheet hairline rules + zero radius + dense columns; purple-to-blue gradient hero + hero-metric row + three generic feature cards.
 
 ## Color strategy (pick before picking colors)
 

@@ -14,9 +14,7 @@ The skill combines six areas plus targeted gap-fillers. Each area has detailed r
 **Do NOT ask which references to load. On activation, match the user's request against the keyword→set map below and immediately `read` every file in the matched set (plus the always-on baseline) before producing any output.** If multiple rows match, load the union of their files. When nothing matches specifically, load the baseline set only.
 
 **Always-on baseline (load for every task):**
-`references/web-interface-guidelines.md`, `references/anti-slop.md`
-
-Load `anti-slop.md` on every task, not just ones that mention "generic" or "cliché" — genericness is the default failure mode of every build, not an edge case, and by the time a request explicitly names the problem it's usually because a previous attempt already looked templated.
+`references/web-interface-guidelines.md`
 
 **Keyword → reference set:**
 
@@ -41,7 +39,7 @@ Load `anti-slop.md` on every task, not just ones that mention "generic" or "clic
 | component state, hover, focus, disabled, loading state | `references/component-states.md` |
 | empty, error state, edge case, skeleton | `references/empty-error-states.md` |
 | accessibility, a11y, screen reader, audit, contrast | `references/accessibility-testing.md` |
-| ai slop, generic, boring, bland, cliché, template, avoid default | `references/modern-aesthetics.md` (anti-slop.md already loaded via baseline) |
+| ai slop, generic, boring, bland, cliché, template, avoid default | `references/anti-slop.md`, `references/modern-aesthetics.md` |
 | theme, bento, glassmorphism, sleek, neobrutalism, material, shadcn, minimal, claymorphism, neumorphism, retro, style, aesthetic | `references/modern-aesthetics.md` (see `theme-master` skill for full catalog) |
 | component, architecture, composition, state, colocate, refactor, structure | `references/component-architecture.md` |
 
@@ -123,8 +121,6 @@ Score each dimension 0–2 (0 = missing, 1 = partial, 2 = solid). **Do not ship 
 | 13 | **Ethics** | Dark patterns present | Neutral | Persuasive without deception |
 
 If any row scores 0, go back to the matching reference file before finishing.
-
-**Before declaring the work done, also run `anti-slop.md`'s "Quick self-check" line-by-line against the actual output** (not from memory — reread the file's checklist and check each box against what you built). This is a mandatory gate on dimension 4 (Distinctiveness), not an optional pass.
 
 ---
 
