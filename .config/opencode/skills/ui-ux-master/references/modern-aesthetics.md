@@ -68,11 +68,7 @@ How to make an interface read as *premium and current* rather than templated. Th
 
 ## The anti-generic guardrail
 
-If the result looks like any of these, it's a default, not a decision:
-- Cream `#F4F1EA` + serif + terracotta accent
-- Near-black + one acid-green/vermilion accent
-- Broadsheet hairline rules + zero radius + dense columns
-- Purple-to-blue gradient hero + "big number, small label" stats row + three generic feature cards
+See `anti-slop.md`'s "The four reflex looks" and full bans list — that file is the single source of truth for banned patterns, loaded on every task via baseline.
 
 Spend the boldness on one signature element; keep everything around it disciplined and quiet.
 
