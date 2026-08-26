@@ -47,6 +47,7 @@ Any updates or `git pull` in this repo will automatically update all installed a
 | **`banner-design`** | Design banners for social media, ads, website heroes, and print with multiple art styles and AI visuals. |
 | **`brand`** | Brand voice, visual identity, messaging frameworks, asset management, and style guide compliance. |
 | **`copywriting`** | High-conversion marketing copy for homepages, landing pages, pricing, and feature pages. |
+| **`cybersecurity-notes-enhancer`** | Transform raw cybersecurity notes into comprehensive, Obsidian-ready learning resources with diagrams, callouts, and attack breakdowns. |
 | **`design`** | Comprehensive design suite: logos (55 styles), CIP mockups, HTML presentations, and vector assets. |
 | **`design-system`** | Token architecture (primitive → semantic → component), Tailwind v4, CSS vars, and component specs. |
 | **`excalidraw-diagram`** | Generate Excalidraw diagrams from text (Obsidian `.md`, Standard `.excalidraw`, Animated modes). |
@@ -70,6 +71,7 @@ Pre-configured slash commands for quick explicit invocation in OpenCode and Clau
 
 - `/git-workflow` — Run Git assistant workflows (commits, PRs, rebasing)
 - `/ui-ux-master` — Run UI/UX design and review workflows
+- `/cybersecurity-notes-enhancer` — Clean and enrich raw cybersecurity notes into structured docs
 - `/excalidraw-diagram` — Generate Excalidraw diagram files
 - `/mermaid-visualizer` — Create formatted Mermaid diagrams
 - `/obsidian-markdown` — Format or build Obsidian markdown notes
