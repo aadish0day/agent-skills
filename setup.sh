@@ -17,7 +17,7 @@ echo "-> Linking skills to Antigravity ($GEMINI_SKILLS)..."
 for skill_dir in "$REPO_DIR"/skills/*; do
   if [ -d "$skill_dir" ]; then
     skill_name="$(basename "$skill_dir")"
-    ln -sf "$skill_dir" "$GEMINI_SKILLS/$skill_name"
+    ln -sfn "$skill_dir" "$GEMINI_SKILLS/$skill_name"
   fi
 done
 echo "   [OK] Antigravity skills linked."
@@ -38,13 +38,13 @@ echo "-> Linking skills & commands to Claude Code ($TARGET_HOME/.claude)..."
 for skill_dir in "$REPO_DIR"/skills/*; do
   if [ -d "$skill_dir" ]; then
     skill_name="$(basename "$skill_dir")"
-    ln -sf "$skill_dir" "$CLAUDE_SKILLS/$skill_name"
+    ln -sfn "$skill_dir" "$CLAUDE_SKILLS/$skill_name"
   fi
 done
 for cmd_file in "$REPO_DIR"/commands/*; do
   if [ -f "$cmd_file" ]; then
     cmd_name="$(basename "$cmd_file")"
-    ln -sf "$cmd_file" "$CLAUDE_COMMANDS/$cmd_name"
+    ln -sfn "$cmd_file" "$CLAUDE_COMMANDS/$cmd_name"
   fi
 done
 echo "   [OK] Claude Code skills & commands linked."
