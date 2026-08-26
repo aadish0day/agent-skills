@@ -1,203 +1,114 @@
-# OpenCode Skills
+# Agent Skills
 
-A collection of reusable [OpenCode](https://opencode.ai) agent skills.
+A collection of reusable skills and commands for AI coding agents — built for **Google Antigravity**, **OpenCode**, and **Claude Code**.
 
-Skills are markdown files with YAML frontmatter that provide domain-specific instructions to OpenCode agents. They're loaded on-demand via the built-in `skill` tool — agents see what's available and pull the full instructions when needed.
+Skills are structured markdown directories (`SKILL.md` + YAML frontmatter + references/scripts) that provide specialized, on-demand domain expertise to AI agents.
 
-## Prerequisites
+---
 
-- [OpenCode](https://opencode.ai) installed (`brew install anomalyco/tap/opencode`, `npm i -g opencode-ai`, or via the install script)
-- OpenCode initialized in a project (`/init` in the TUI) — recommended but not required
+## ⚡ Supported Agents
 
-## Quick Start
+| Agent | Global Location | Project Location | Format |
+|---|---|---|---|
+| **Google Antigravity** | `~/.gemini/config/skills/<name>/` | `.gemini/skills/` | Standard `SKILL.md` |
+| **OpenCode** | `~/.config/opencode/skills/<name>/` | `.opencode/skills/` | Standard `SKILL.md` |
+| **Claude Code** | `~/.claude/skills/<name>/` | `.claude/skills/` | Standard `SKILL.md` |
+| **Generic Coding Agents** | Custom config path | `.agents/skills/` | Standard `SKILL.md` |
 
-### Clone the repo
+---
 
+## 🚀 Quick Start
+
+### 1. Clone the repository
 ```bash
-git clone https://github.com/aadish0day/opencode-skills.git
-cd opencode-skills
+git clone https://github.com/aadish0day/agent-skills.git
+cd agent-skills
 ```
 
-### Install globally with setup script (recommended)
-
+### 2. Install globally across all agents
+Run the unified installer:
 ```bash
 ./setup.sh
 ```
 
-Or manually with GNU Stow:
+This symlinks the repository directly into:
+- `~/.gemini/config/skills/` (Antigravity)
+- `~/.config/opencode/skills/` and `~/.config/opencode/commands/` (OpenCode)
+- `~/.claude/skills/` and `~/.claude/commands/` (Claude Code)
 
-```bash
-stow -t ~ .
-```
+Any updates or `git pull` in this repo will automatically update all installed agents.
 
-For a custom target directory:
+---
 
-```bash
-./setup.sh /path/to/home
-```
+## 📦 Available Skills
 
-This symlinks `.config/opencode/` into your home directory. Skills and commands stay in the repo — any `git pull` updates them automatically.
-
-### Install per-project (manual copy)
-
-```bash
-cp -r .opencode/skills /path/to/your/project/.opencode/
-```
-
-### Verify it's working
-
-1. Start OpenCode in any project: `opencode`
-2. Look for the skill in the available tools section when you start a session
-3. Type a prompt that matches the skill's purpose (e.g., "commit this") — the agent should automatically load and follow the skill's instructions
-
-## Available Skills
-
-### `git-workflow`
-
-A comprehensive Git workflow assistant. Triggered automatically when you ask about commits, branches, pushing, rebasing, squashing, PRs, or merge conflicts.
-
-**Covers:**
-- **Commit messages** — Conventional Commits format (`feat`, `fix`, `refactor`, etc.), scopes, body writing, issue references
-- **Branch naming** — Type-prefixed kebab-case (`feature/`, `fix/`, `refactor/`, `chore/`)
-- **Pushing** — Always sets upstream with `git push --set-upstream origin <branch>` on first push
-- **Rebase vs merge** — Decision tree based on whether the branch is shared
-- **Squashing** — Interactive rebase with consolidated commit messages
-- **PR descriptions** — Structured markdown: Summary, Changes, Testing, Notes
-- **Conflict resolution** — Explains hunks, proposes resolutions, runs build/tests after
-
-### `ui-ux-master`
-
-A comprehensive UI/UX design and layout toolkit. Triggered automatically when you ask to design or build a web UI, create a design system, make something look premium/modern, add animations, apply UX/product thinking, or review an interface for accessibility and polish. Structured as a lean **router**: the `SKILL.md` points to 28 on-demand reference files so only what a task needs gets loaded.
-
-**Covers:**
-- **Design thinking** — problem framing, job-to-be-done, research, ideation, double-diamond process
-- **Design systems & tokens** — token generator script + wiring into CSS vars, Tailwind v4, TypeScript, dark mode
-- **Tailwind design (v4)** — `@theme` tokens, CVA variants, component extraction, common mistakes
-- **Web interface guidelines** — full MUST/SHOULD/NEVER baseline (a11y, forms, perf, motion, dark mode, mobile)
-- **Distinctive & modern aesthetics** — anti-generic direction, color systems, depth/glass, bento layouts, "make it look expensive"
-- **UX business logic** — job-first framing, conversion funnels, onboarding/activation, cognitive-load laws, retention, no dark patterns
-- **Responsive design** — mobile-first, container queries, fluid typography, CSS Grid, breakpoint strategies
-- **Layout & composition** — grids, 8pt spacing, reading patterns, section/hero/bento structure, visual balance
-- **Forms & data display** — form flows/validation UX, multi-step wizards, tables/charts/KPI cards, dashboards
-- **Mobile & touch** — touch targets, thumb zones, gestures, safe areas, responsive nav, platform conventions
-- **UX writing** — voice/tone, button/error/empty copy, i18n-safe micro-copy
-- **Interaction & signature motion** — microinteractions plus high-end motion (springs, shared-element/layout transitions, scroll-driven, choreography)
-- **Component & edge states** — full state matrix (hover/focus/disabled/loading/error) and loading/empty/error/offline states
-- **Design critique** — 7-lens review, anti-slop audit, severity triage, iteration
-- **Anti-slop** — concrete banned patterns (cream bg, eyebrow/01·02·03 on every section, gradient text, side-stripe borders), AI-slop test, color strategy
-- **Component architecture** — composition over config, data/presentation split, state ladder, semantic tokens, focus management
-- **Landing pages** — high-conversion single-offer structure, layout types, copy templates, SEO/AEO, pitfalls
-- **Polish** — concentric radii, optical alignment, layered shadows, tabular numbers, typography details
-- **Accessibility & quality** — APCA contrast, screen-reader/keyboard audits, full MUST/SHOULD/NEVER interface checklist
-- **Self-audit rubric** — 13-dimension scored review to run before shipping
-
-### `frontend-design`
-
-Guidance for distinctive, intentional visual design when building or reshaping a UI. Triggered when you need aesthetic direction, typography, and choices that don't read as templated defaults.
-
-### `copywriting`
-
-Expert conversion copywriting for any marketing page — homepage, landing, pricing, feature, or about. Triggers on "write copy for," "improve this copy," "headline help," "CTA copy," "value proposition," "this copy is weak," and similar. Includes clarity-over-cleverness principles, benefits-over-features, headline/CTA formulas, page-specific guidance, and output with annotations + alternatives. Reference files: `copy-frameworks.md`, `natural-transitions.md`.
-
-## How Skills Work in OpenCode
-
-Skills are stored in `.opencode/skills/<skill-name>/SKILL.md`. OpenCode discovers them automatically from two locations:
-
-| Location | Scope |
+| Skill | Description |
 |---|---|
-| `~/.config/opencode/skills/<name>/SKILL.md` | **Global** — all projects |
-| `.opencode/skills/<name>/SKILL.md` | **Project** — that repo only |
-| `.claude/skills/<name>/SKILL.md` | **Project** — Claude Code compatible |
-| `.agents/skills/<name>/SKILL.md` | **Project** — generic agent compatible |
+| **`banner-design`** | Design banners for social media, ads, website heroes, and print with multiple art styles and AI visuals. |
+| **`brand`** | Brand voice, visual identity, messaging frameworks, asset management, and style guide compliance. |
+| **`copywriting`** | High-conversion marketing copy for homepages, landing pages, pricing, and feature pages. |
+| **`design`** | Comprehensive design suite: logos (55 styles), CIP mockups, HTML presentations, and vector assets. |
+| **`design-system`** | Token architecture (primitive → semantic → component), Tailwind v4, CSS vars, and component specs. |
+| **`excalidraw-diagram`** | Generate Excalidraw diagrams from text (Obsidian `.md`, Standard `.excalidraw`, Animated modes). |
+| **`flutter-expert`** | Flutter development with Dart 3, state management, animations, and cross-platform architecture. |
+| **`frontend-design`** | Anti-generic, intentional frontend interfaces with Tailwind CSS v4, shadcn/ui, and Motion. |
+| **`git-workflow`** | Complete Git assistant: Conventional Commits, branch naming, safe pushes, rebasing, and PR reviews. |
+| **`llm-council`** | Peer-reviewed decision making using a Karpathy-style 5-member AI council. |
+| **`mermaid-visualizer`** | Generate syntax-validated Mermaid diagrams (flows, sequence, architecture, mindmaps). |
+| **`obsidian-markdown`** | Create and edit Obsidian Flavored Markdown (wikilinks, callouts, embeds, frontmatter properties). |
+| **`slides`** | Strategic HTML presentations with Chart.js, responsive layouts, and design tokens. |
+| **`theme-master`** | Catalog of 68 design system themes (bento, sleek, glassmorphism, neobrutalism, shadcn, etc.). |
+| **`ui-styling`** | Accessible UIs with shadcn/ui, Tailwind CSS utility patterns, and theme customization. |
+| **`ui-ux-master`** | Complete UI/UX design & layout toolkit: responsive grids, signature motion, microinteractions, and polish. |
+| **`ui-ux-pro-max`** | Extensive design database with 67 styles, 161 palettes, 57 font pairings, and 22 tech stack presets. |
 
-OpenCode walks up from the current directory to the git worktree root, loading skills from any of these paths along the way.
-
-## Using a Skill with `/git-workflow` (Slash Command)
-
-By default, the agent loads skills automatically via the built-in `skill` tool when your prompt matches the skill's description. If you want to invoke it explicitly with a slash command like `/git-workflow`:
-
-If you used `./setup.sh` or `stow -t ~ .`, the command is already linked. Just restart OpenCode and type `/git-workflow`.
-
-To create it manually:
-
-```bash
-mkdir -p ~/.config/opencode/commands
-cat > ~/.config/opencode/commands/git-workflow.md << 'EOF'
----
-description: Git workflow assistant — commits, branches, rebase/merge, PRs
 ---
 
-Use the git-workflow skill to handle this task.
-EOF
+## ⌨️ Slash Commands
+
+Pre-configured slash commands for quick explicit invocation in OpenCode and Claude Code:
+
+- `/git-workflow` — Run Git assistant workflows (commits, PRs, rebasing)
+- `/ui-ux-master` — Run UI/UX design and review workflows
+- `/excalidraw-diagram` — Generate Excalidraw diagram files
+- `/mermaid-visualizer` — Create formatted Mermaid diagrams
+- `/obsidian-markdown` — Format or build Obsidian markdown notes
+
+---
+
+## 🛠️ Skill Directory Structure
+
+Each skill lives in its own folder under `skills/<name>/`:
+
+```text
+skills/<skill-name>/
+├── SKILL.md                 # Required: Entry point with YAML frontmatter
+├── references/              # Optional: On-demand markdown references
+├── scripts/                 # Optional: Helper utilities and CLI scripts
+└── templates/               # Optional: Code templates or scaffolding
 ```
 
-Restart OpenCode, then type `/git-workflow` — the agent will load the skill.
-
-## Skill File Format
-
-Each `SKILL.md` requires YAML frontmatter:
+### `SKILL.md` Format
 
 ```markdown
 ---
-name: git-workflow              # Required: kebab-case, 1-64 chars, matches directory name
-description: |-                  # Required: 1-1024 chars, specific enough for agent to pick correctly
+name: git-workflow              # Required: kebab-case, matching directory name
+description: |-                  # Required: Specific trigger description for agent routing
   General git workflow assistant covering commit message writing,
   branching strategy, rebasing vs merging, and PR/MR descriptions.
-  Use whenever the user asks about commits, branches, pushing, rebasing,
-  squashing, PRs, or merge conflicts.
 license: MIT                     # Optional
-compatibility: opencode          # Optional
-metadata:                        # Optional: string-to-string map
-  audience: developers
-  workflow: git
+metadata:
+  version: 1.0.0
 ---
 
 # Skill Instructions
 
-Content here — the agent reads this when the skill is loaded.
+Instructions and workflows that the agent reads when this skill is activated.
 ```
 
-**Rules:**
-- `name` must match the directory name
-- `name` regex: `^[a-z0-9]+(-[a-z0-9]+)*$`
-- `description` must be 1–1024 characters
+---
 
-## Permissions
+## 🤝 Contributing
 
-Control which skills agents can access via `opencode.json`:
+Contributions of new skills or enhancements to existing ones are welcome! Ensure each skill includes a clear `SKILL.md` with accurate trigger descriptions and self-contained documentation.
 
-```json
-{
-  "permission": {
-    "skill": {
-      "*": "allow",
-      "internal-*": "deny",
-      "experimental-*": "ask"
-    }
-  }
-}
-```
-
-Values: `allow` (loads immediately), `deny` (hidden from agent), `ask` (prompts user).
-
-## Troubleshooting
-
-**Skill not showing up:**
-1. Verify the file is named `SKILL.md` (all caps)
-2. Check frontmatter includes `name` and `description`
-3. Ensure `name` matches the parent directory name
-4. Check permissions — `deny` hides the skill
-5. Skill names must be unique across all locations
-6. Restart OpenCode after adding a new skill
-
-## Creating a New Skill
-
-1. Create a directory: `.config/opencode/skills/<skill-name>/`
-2. Create `SKILL.md` inside it with YAML frontmatter
-3. Write the instructions in markdown
-4. Run `./setup.sh` or `stow -t ~ .`  to symlink it
-5. Restart OpenCode or start a new session
-
-The `.opencode/` directory in this repo is a symlink to `.config/opencode/` — both paths stay in sync.
-
-Contributions welcome — open a PR!

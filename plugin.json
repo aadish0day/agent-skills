@@ -1,5 +1,6 @@
 {
-  "name": "opencode-skills",
+  "name": "agent-skills",
   "version": "1.0.0",
-  "description": "A collection of reusable OpenCode agent skills"
+  "description": "A collection of reusable skills and commands for AI coding agents (Antigravity, OpenCode, Claude Code)"
 }
+
