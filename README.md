@@ -69,12 +69,24 @@ Any updates or `git pull` in this repo will automatically update all installed a
 
 Pre-configured slash commands for quick explicit invocation in OpenCode and Claude Code:
 
-- `/git-workflow` — Run Git assistant workflows (commits, PRs, rebasing)
-- `/ui-ux-master` — Run UI/UX design and review workflows
+- `/banner-design` — Generate banner designs for web, social media, and print
+- `/brand` — Manage brand voice, visual identity, and consistency
+- `/copywriting` — Draft and polish conversion copywriting for landing/pricing pages
 - `/cybersecurity-notes-enhancer` — Clean and enrich raw cybersecurity notes into structured docs
-- `/excalidraw-diagram` — Generate Excalidraw diagram files
-- `/mermaid-visualizer` — Create formatted Mermaid diagrams
-- `/obsidian-markdown` — Format or build Obsidian markdown notes
+- `/design` — Generate brand identity, logos, CIP assets, and presentation designs
+- `/design-system` — Architect design tokens and component specifications
+- `/excalidraw-diagram` — Generate Excalidraw diagrams (Obsidian, Standard, Animated)
+- `/flutter-expert` — Flutter & Dart 3 architecture, animations, and widgets
+- `/frontend-design` — Create distinctive, anti-generic web interfaces
+- `/git-workflow` — Run Git assistant workflows (commits, PRs, rebasing)
+- `/llm-council` — Run decisions through a 5-member peer-reviewed AI council
+- `/mermaid-visualizer` — Create formatted, syntax-validated Mermaid diagrams
+- `/obsidian-markdown` — Format or build Obsidian markdown notes (wikilinks, callouts, embeds)
+- `/slides` — Build interactive HTML presentations with Chart.js
+- `/theme-master` — Apply and customize 68 UI design system themes
+- `/ui-styling` — Build accessible interfaces with shadcn/ui and Tailwind
+- `/ui-ux-master` — Complete UI/UX design, motion, and polish toolkit
+- `/ui-ux-pro-max` — Query design styles, color palettes, fonts, and stack guidelines
 
 ---
 
