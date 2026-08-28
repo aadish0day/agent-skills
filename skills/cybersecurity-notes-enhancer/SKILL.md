@@ -62,6 +62,13 @@ Apply all cleanup silently before enhancement. Do not produce a changelog.
 - All image references: `![[filename.ext]]`
 - All wikilinks: `[[page name]]`
 - Working code blocks, tables, and lists
+- Existing YAML frontmatter/properties block — never strip, remove, or add
+  fields to it. Leave it exactly as given.
+
+**Never fabricate:**
+- Do not generate or add a YAML frontmatter/properties block (`title`, `tags`,
+  `date`, `aliases`, etc.) if the original notes did not already have one.
+  Start the output directly with the `#` title heading in that case.
 
 **Edge cases:**
 - If a topic has no useful content after cleanup, mark it with
@@ -119,145 +126,52 @@ For commands that appear in the notes, provide:
 
 **Inline emphasis:** **Bold** for tool names and security keywords.
 `` `code` `` for flags and syntax. *Italics* for variable arguments.
+`==Highlight==` the single most critical fact per section: the flag that
+matters, the answer to a lab question, a CVE ID, the one line someone
+scanning the note needs to catch. Use sparingly, one or two per section max.
+Overuse defeats the purpose.
 
----
+### Prose Style
 
-## Prose Style
+See [PROSE_STYLE.md](references/PROSE_STYLE.md) for the rules governing
+explanatory sentences: commit vs. hedge, specificity, sentence-length variety,
+cut scaffolding, and buzzwords to avoid.
 
-This applies only to explanatory prose — the sentences in "What is it?", "Why
-does it matter?", "How does it compare?", "When does it apply?", callout bodies,
-and any freestanding paragraph. It does not apply to tables, code blocks, command
-breakdowns, diagrams, or headings, where uniformity and fixed structure are
-correct.
+### Cross-Linking (Wikilinks)
 
-**Commit, don't hedge.** State how a technique works or when to use it directly.
-Qualify once with the actual exception, not a general "may vary" hedge.
-❌ "This could potentially allow an attacker to access data in some cases."
-✅ "This lets an attacker read arbitrary files if the app passes user input
-straight to the filesystem. It doesn't work if the app whitelists paths."
+Beyond preserving existing `[[wikilinks]]`, actively add new ones on first
+mention of a concept that plausibly has, or should have, its own note in a
+security vault: named tools (`[[Nmap]]`, `[[Burp Suite]]`, `[[Metasploit]]`),
+named vulnerability classes (`[[SQL Injection]]`, `[[XSS]]`), frameworks
+(`[[OWASP Top 10]]`), and named techniques with their own identity (e.g.
+`[[Pass the Hash]]`). Link only the first mention per document, not every
+occurrence. Don't link generic nouns (a `[[scan]]`, a `[[port]]`) — only
+things with enough identity to warrant their own note.
 
-**Be specific, not categorical.** Prefer the concrete mechanism, tool, or CVE
-over a vague category.
-❌ "Many web apps are vulnerable to this."
-✅ "Any endpoint that reflects a `redirect_url` param without validating the
-host is vulnerable."
-
-**Vary sentence length.** Don't let every explanatory sentence land at the same
-12–20 word cadence. A short sentence can land the point; a longer one can carry
-the mechanism.
-
-**Cut scaffolding.** No "In today's threat landscape…" openers, no "Moreover/
-Furthermore" between paragraphs, no "In summary" closers. Start on the concept.
-Stop when the explanation is done.
-
-**Avoid buzzwords.** delve, tapestry, landscape, robust, seamless, leverage,
-holistic, game-changer, unlock, elevate, foster, empower — use the plain
-technical term instead.
-
-Keep this in the instructor voice already established above: direct, technical,
-opinionated where the material calls for an opinion (e.g. "prefer X over Y here
-because Z"), not performatively casual.
+If a topic has a natural companion reference note the student would want
+(e.g. a command list, a CVE), and one doesn't exist in the input, don't
+fabricate the link — only link concepts, not invented filenames.
 
 ---
 
 ## Mermaid Diagrams
 
-Add a diagram only when it genuinely aids understanding. Not every concept needs
-one. Complex attack flows, protocol exchanges, and decision trees benefit from
-diagrams. Simple definitions do not.
+Add a diagram only when it genuinely aids understanding — complex attack flows,
+protocol exchanges, decision trees. Simple definitions don't need one.
 
-### When to use which type
-
-- **Flowchart** (`graph TD`): Attack flows, decision logic, scanning methodology
-- **Sequence diagram**: Protocol exchanges, request/response cycles
-- **State diagram**: Session states, connection states
-- **Mind map**: Concept relationships, threat categories
-- Other types (timeline, ER, Gantt, quadrant, network graph) as appropriate
-
-### Layout
-
-- `graph TD` (top to bottom) for sequential flows and decision trees
-- `graph LR` (left to right) for hierarchical and tree structures
-
-### Colors
-
-Include these four `classDef` definitions in every diagram. Assign every node
-exactly one class:
-
-```
-classDef danger   fill:#FAECE7,stroke:#993C1D,color:#4A1B0C
-classDef action   fill:#E1F5EE,stroke:#0F6E56,color:#04342C
-classDef decision fill:#EEEDFE,stroke:#534AB7,color:#26215C
-classDef neutral  fill:#F1EFE8,stroke:#5F5E5A,color:#2C2C2A
-```
-
-- `danger`: High-risk nodes, attacker-controlled paths, failure states
-- `action`: Productive steps, successful outcomes, analyst actions
-- `decision`: Branch points, conditional nodes
-- `neutral`: Starting points, structural nodes, informational steps
-
-### Obsidian Compatibility
-
-- Wrap in ` ```mermaid ` code blocks
-- Use `<br>` for line breaks within nodes (not `\n`)
-- Keep node labels concise
-- Do not use `%%` comments
-- Wrap labels with special characters in double quotes
-- Decision nodes: `F{"Label?"}` not `F{Label?}`
-
-### Reference Diagram
-
-Match this exact style in all output diagrams:
-
-```mermaid
-graph TD
-    A[Target web server identified] --> B{"Explicit authorization?"}
-    B --> C[No]
-    B --> D[Yes]
-    C --> E[Stop: unauthorized testing is illegal]
-    D --> F[Select appropriate wordlist]
-    F --> G[Configure ffuf with target URL]
-    G --> H[Run directory fuzzing scan]
-    H --> I{"Meaningful responses found?"}
-    I --> J[Yes: investigate further]
-    I --> K[No: refine wordlist or try sub-paths]
-    J --> L[Document findings]
-    K --> F
-
-    classDef danger   fill:#FAECE7,stroke:#993C1D,color:#4A1B0C
-    classDef action   fill:#E1F5EE,stroke:#0F6E56,color:#04342C
-    classDef decision fill:#EEEDFE,stroke:#534AB7,color:#26215C
-    classDef neutral  fill:#F1EFE8,stroke:#5F5E5A,color:#2C2C2A
-
-    class C,E danger
-    class D,F,G,H,J,L action
-    class B,I decision
-    class A,K neutral
-```
+See [MERMAID.md](references/MERMAID.md) for diagram type selection, layout
+rules, the required color scheme, Obsidian compatibility constraints, and the
+reference diagram to match style against.
 
 ---
 
 ## Callouts
 
-Use Obsidian callouts to highlight important information. Available types:
+Use Obsidian callouts to highlight important information.
 
-| Type | Use for |
-|---|---|
-| `> [!abstract] Security Overview` | Threat landscape summaries, topic intros |
-| `> [!note] Security Concept` | Fundamental principles |
-| `> [!tip] Professional Insight` | Best practices, analyst wisdom |
-| `> [!warning] Security Warning` | Risks associated with tools or techniques |
-| `> [!danger] Critical Security Alert` | High-risk items, severe misuse potential |
-| `> [!bug] Debugging Help` | Common technical problems and fixes |
-| `> [!question] Think About It` | Reflection questions for deeper understanding |
-| `> [!info] Security Reference` | Additional context |
-| `> [!success] Detection Method` | Security controls, detection techniques |
-| `> [!warning] Incomplete Section` | Topics with insufficient source content |
-
-**Rules:**
-- Hard line break after the `> [!type] Title` line
-- Every line of callout content begins with `> `
-- No two callouts back-to-back without prose between them
+See [CALLOUTS.md](references/CALLOUTS.md) for the full type table, foldable
+callout syntax for long reference dumps, and the footnote-citation format for
+CVEs and sources.
 
 ---
 
