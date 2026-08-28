@@ -34,7 +34,22 @@ they can return to for deep understanding. Teach, don't just format.
    that domain.
 4. **Let the content dictate structure.** Not every topic needs the same treatment.
    A simple definition needs a paragraph. A complex attack chain needs a full
-   breakdown with diagrams. Match the depth to the substance.
+   breakdown with diagrams. Match the depth to the substance. In practice, notes
+   tend to fall into one of three archetypes — identify which one a section is
+   before deciding how to treat it:
+   - **Concept explanation** (a vulnerability class, protocol, or mechanism being
+     learned): gets the full teaching treatment — the "What/Why/How" dimensions,
+     comparison tables, diagrams where they earn their place.
+   - **Command/cheatsheet dump** (a list of tool invocations or syntax for quick
+     reference): stays dense and scannable. Explain each command once via the
+     breakdown table format; don't wrap every line in paragraphs of prose it
+     doesn't need.
+   - **Failed-attempt / debugging log** (something that didn't work, an error
+     encountered, a fix found): structure as symptom → cause → fix. Preserve the
+     raw failure per the cleanup rules above; the failure is the content, not a
+     mess to clean up before the "real" explanation.
+   A single document can mix all three — treat each section according to what
+   it actually is, not a single template applied uniformly top to bottom.
 
 ---
 
@@ -45,18 +60,38 @@ Apply all cleanup silently before enhancement. Do not produce a changelog.
 **Remove:**
 - Exact duplicates (keep the most complete version)
 - Irrelevant or off-topic content
-- Unfixable broken commands
 - Placeholder text (TODO, FIX, "add more here")
 
 **Merge:**
 - The same topic appearing multiple times into one comprehensive section
 - Scattered related concepts under the appropriate heading
 
-**Fix:**
-- Syntax errors in commands
+**Fix (accidental errors only):**
+- Obvious typos in commands that are clearly unintentional (missing closing
+  quote from a paste error, a flag typo'd where context makes the intended
+  flag unambiguous)
 - Outdated flags or deprecated options (note the correction in a callout)
 - Inaccurate technical explanations
 - Code blocks missing a language tag
+
+**Never "fix" — this is signal, not noise:**
+Malformed payloads, deliberately broken syntax, raw error output, and failed
+command attempts are often the entire point of a security note, not mistakes
+to clean up. A malformed SQLi string, a fuzzing payload with intentionally
+invalid characters, a command that failed and the error it produced — these
+are the evidence of what was tried and what happened. Do not "fix," rewrite,
+or remove them.
+
+- If a command clearly succeeded and is meant as the clean reference version,
+  polish it as usual.
+- If a command's brokenness looks intentional (part of testing a filter,
+  demonstrating a bypass, or showing what fails and why) or you cannot tell
+  which it is, preserve it verbatim and explain what it demonstrates rather
+  than normalizing it. Use a foldable `> [!bug]- Raw Attempt` callout to hold
+  the raw command/output if it would otherwise clutter the main explanation.
+- If a command is genuinely unfixable garbage with no evident intent or
+  learning value (a fragment cut off mid-paste, unrecoverable noise), it can
+  still be removed — but that's a narrower bar than "looks broken."
 
 **Preserve without exception:**
 - All image references: `![[filename.ext]]`
@@ -124,6 +159,22 @@ For commands that appear in the notes, provide:
 | `-flag` | Flag | What behaviour it enables |
 | *target* | Argument | What it acts on and why |
 
+**Payload shielding:** Never place a raw payload, HTTP request, or command
+containing pipes (`|`), unescaped quotes, angle brackets, or shell operators
+directly into a table cell — it will break the table's column parsing in
+Obsidian. Such content stays inside the fenced code block only. In the
+breakdown table, reference it descriptively instead of reproducing it
+verbatim: `| Payload | Injection | Breaks out of the WHERE clause via unescaped quote |`,
+not the literal payload string as a table row.
+
+**Response/output signal:** When notes include what the target returned
+(stdout, an HTTP response, a scan result), don't just explain the command
+sent — call out the specific line that mattered: the status code, the
+reflected value, the version banner, the timing difference, the error that
+confirmed or ruled out the hypothesis. Use `==highlight==` on that line
+where it appears in a code block's surrounding prose, or add a one-line
+note directly beneath the code block naming what to look for.
+
 **Inline emphasis:** **Bold** for tool names and security keywords.
 `` `code` `` for flags and syntax. *Italics* for variable arguments.
 `==Highlight==` the single most critical fact per section: the flag that
@@ -136,6 +187,28 @@ Overuse defeats the purpose.
 See [PROSE_STYLE.md](references/PROSE_STYLE.md) for the rules governing
 explanatory sentences: commit vs. hedge, specificity, sentence-length variety,
 cut scaffolding, and buzzwords to avoid.
+
+### Variable Labeling
+
+Lab notes reuse IPs and ports constantly (`10.10.x.x`, `127.0.0.1`, `tun0`)
+and it's often ambiguous on reread which one was the attacker box, the
+target, or a local proxy. Where the notes don't already make this clear and
+it matters for reproducing the step, label it inline the first time it
+appears: "target (`10.10.11.16`)", "attacker/tun0 (`10.10.14.5`)", "local
+Burp proxy (`127.0.0.1:8080`)". Don't relabel every subsequent occurrence,
+just the first per section, and don't invent a role for an IP if it isn't
+inferable from context — leave it as-is rather than guessing.
+
+### Attack-Chain Structure
+
+When a section is clearly a multi-step chain (recon → foothold → privesc,
+or any sequence where one step's output feeds the next), number the steps
+and state the handoff explicitly: what got captured in one step that the
+next step consumes. "Step 2 → Step 3: pass the session cookie captured
+above into the `Cookie` header of the request below" is the shape. Don't
+force numbering onto a section that's really a flat list of independent
+commands with no sequential dependency — that's still a cheatsheet, not a
+chain.
 
 ### Cross-Linking (Wikilinks)
 
