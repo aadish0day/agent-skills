@@ -43,9 +43,42 @@ classDef neutral  fill:#F1EFE8,stroke:#5F5E5A,color:#2C2C2A
 - Wrap labels with special characters in double quotes
 - Decision nodes: `F{"Label?"}` not `F{Label?}`
 
-## Reference Diagram
+## Size Limit
 
-Match this exact style in all output diagrams:
+Keep diagrams to roughly 10-12 nodes. If a process genuinely needs more,
+split it into two linked diagrams (e.g. "Recon phase" and "Exploitation
+phase") rather than one sprawling graph. A diagram that takes longer to
+parse than the prose it replaces has failed its purpose.
+
+## When NOT to Diagram
+
+Don't reach for a diagram just because a concept is technical. Skip it when:
+
+- The flow is strictly linear with no branches (3 steps in a row reads
+  faster as a numbered list)
+- A sequence diagram would show only one request and one response (that's
+  a sentence: "the client sends X, the server replies with Y")
+- The "relationship" is really just a list of options with no structure
+  connecting them (that's a table, not a mind map)
+
+## Color Classes by Diagram Type
+
+The four classes below are shaped for attack-flow flowcharts. Apply them
+accordingly per diagram type:
+
+- **Flowchart:** use all four classes as defined.
+- **Sequence diagram:** classes don't apply to participants/messages the
+  same way. Skip `classDef`/`class` entirely unless a specific message
+  represents a failure or attack step worth calling out with `Note over`.
+- **State diagram:** map loosely — a compromised/failed state can borrow
+  `danger`, a terminal successful state can borrow `action`, but don't
+  force every state into a class if it adds noise.
+
+## Reference Diagrams
+
+Match these exact styles in all output diagrams of the corresponding type.
+
+### Flowchart
 
 ```mermaid
 graph TD
@@ -71,4 +104,32 @@ graph TD
     class D,F,G,H,J,L action
     class B,I decision
     class A,K neutral
+```
+
+### Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    participant A as Attacker
+    participant S as Web Server
+    participant D as Database
+
+    A->>S: GET /product?id=1' OR '1'='1
+    S->>D: SELECT * FROM products WHERE id='1' OR '1'='1'
+    Note over D: Condition always true,<br>filter bypassed
+    D-->>S: Full product table
+    S-->>A: Response includes all rows
+```
+
+### State Diagram
+
+```mermaid
+stateDiagram-v2
+    [*] --> Unauthenticated
+    Unauthenticated --> SessionPending: Submit credentials
+    SessionPending --> Authenticated: Valid credentials
+    SessionPending --> Unauthenticated: Invalid credentials
+    Authenticated --> Unauthenticated: Session expires or logout
+    Authenticated --> Compromised: Session token stolen
+    Compromised --> [*]
 ```
